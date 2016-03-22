@@ -14,7 +14,8 @@ import retrofit2.Response;
 
 public abstract class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ListViewHolder>{
 
-    public abstract void updateItems(Response<?> rawResponse);
+    public abstract void updateItems(Response<?> rawResponse, HorizontalViewAdapter horizontal_data);
+
 
     public class ListViewHolder extends RecyclerView.ViewHolder{
         TextView list_txt;

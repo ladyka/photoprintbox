@@ -1,38 +1,58 @@
 package com.printapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.GridView;
 import android.widget.Toast;
 
-import com.printapp.adapters.GridViewAdapter;
+import com.printapp.adapters.HorizontalViewAdapter;
+import com.printapp.adapters.SimpleGridViewAdapter;
+import com.printapp.models.Photo;
 import com.printapp.models.SearchPhotos;
 import com.printapp.models.ServiceGenerator;
 import com.printapp.models.VkApi;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ItemActivity extends AppCompatActivity {
+    private Context context;
     private VkApi vk;
     private Call<SearchPhotos> call;
     private RecyclerView horizontal_recview;
-    private RecyclerView grid_recview;
-    private GridViewAdapter gva;
-    private int type;
+    private GridView grid_view;
+    private SimpleGridViewAdapter sgva;
+    private HorizontalViewAdapter hva;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         setContentView(R.layout.activity_item);
+
         horizontal_recview = (RecyclerView) findViewById(R.id.horizontal_recview);
-        grid_recview = (RecyclerView) findViewById(R.id.grid_recview);
+        hva = new HorizontalViewAdapter();
+
+        hva.setData((ArrayList<Photo>) getIntent().getExtras().getSerializable("LIST"));
+        System.out.println("LIST LENGTH IN ITEM  "+((ArrayList<Photo>) getIntent().getExtras().getSerializable("LIST")).size());
+
+
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        horizontal_recview.setLayoutManager(llm);
+        horizontal_recview.setAdapter(hva);
+        grid_view = (GridView) findViewById(R.id.grid_view);
+
 
         Toast.makeText(this, String.valueOf(this.getIntent().getExtras().getLong("ID")),Toast.LENGTH_SHORT).show();
-        //type = getIntent().getExtras().getInt("TYPE");
 
         vk = ServiceGenerator.createService(VkApi.class);
         call = vk.getPhotos(200, String.valueOf(this.getIntent().getExtras().getLong("ID")),
@@ -42,10 +62,9 @@ public class ItemActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<SearchPhotos> call, Response<SearchPhotos> response) {
                 Log.d("onResponse: ", String.valueOf(response.body().response.count));
-                gva = new GridViewAdapter(response);
-                RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),3);
-                grid_recview.setLayoutManager(layoutManager);
-                grid_recview.setAdapter(gva);
+                sgva = new SimpleGridViewAdapter(context,hva);
+                sgva.setGridData(response);
+                grid_view.setAdapter(sgva);
             }
 
             @Override
@@ -53,6 +72,11 @@ public class ItemActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -67,9 +91,9 @@ public class ItemActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent bundle = new Intent();
-        bundle.putExtra("1","Extra message");
-        setResult(RESULT_OK,bundle);
+        Intent result = new Intent();
+        result.putExtra("LIST",hva.getData());
+        setResult(RESULT_OK,result);
         super.onBackPressed();
     }
 }

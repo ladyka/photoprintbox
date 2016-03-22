@@ -38,11 +38,6 @@
             android:layout_width="match_parent"
             android:visibility="visible">
         </SearchView >
-        <Button
-            android:id="@+id/btt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"

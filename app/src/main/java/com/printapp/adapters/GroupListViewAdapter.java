@@ -2,7 +2,6 @@ package com.printapp.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 
 import com.printapp.ItemActivity;
@@ -16,9 +15,12 @@ import retrofit2.Response;
 public class GroupListViewAdapter extends ListViewAdapter {
 
     ArrayList<Group> items = new ArrayList<>();
+    HorizontalViewAdapter data;
+
     @Override
-    public void updateItems(Response<?> rawResponse) {
-        try {
+    public void updateItems(Response<?> rawResponse, HorizontalViewAdapter horizontal_data) {
+        this.data = horizontal_data;
+        try{
             Response<SearchGroups> response = (Response<SearchGroups>) rawResponse;
             items.clear();
             for (Object ob : response.body().response.items) {
@@ -47,8 +49,8 @@ public class GroupListViewAdapter extends ListViewAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(),ItemActivity.class);
                 intent.putExtra("ID",-((long)currentGroup.id));
+                intent.putExtra("LIST", data.photos);
                 ((Activity) v.getContext()).startActivityForResult(intent, 1);
-                //Toast.makeText(v.getContext(),String.valueOf(currentUser.id),Toast.LENGTH_SHORT).show();
             }
         });    }
 

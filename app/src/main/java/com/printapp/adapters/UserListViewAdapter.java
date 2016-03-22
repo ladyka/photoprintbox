@@ -15,8 +15,11 @@ import retrofit2.Response;
 public class UserListViewAdapter extends ListViewAdapter{
 
     ArrayList<User> items = new ArrayList<>();
+    HorizontalViewAdapter data;
+
     @Override
-    public void updateItems(Response<?> rawResponse) {
+    public void updateItems(Response<?> rawResponse,HorizontalViewAdapter horizontal_data) {
+        this.data = horizontal_data;
         try {
             Response<SearchUsers> response = (Response<SearchUsers>) rawResponse;
             items.clear();
@@ -46,6 +49,8 @@ public class UserListViewAdapter extends ListViewAdapter{
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(),ItemActivity.class);
                 intent.putExtra("ID",(long)currentUser.id);
+                System.out.println("LIST LENGTH IN ADAPTER  "+data.photos.size());
+                intent.putExtra("LIST", data.photos);
                 ((Activity) v.getContext()).startActivityForResult(intent, 1);
                 //Toast.makeText(v.getContext(),String.valueOf(currentUser.id),Toast.LENGTH_SHORT).show();
             }

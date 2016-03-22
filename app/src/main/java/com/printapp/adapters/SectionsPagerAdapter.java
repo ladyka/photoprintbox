@@ -23,8 +23,8 @@ public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
         this.sfarr[1] = SearchFragment.newInstance(1, new GroupListViewAdapter());
     }
 
-    public void update(int pagenum, Response<?> response){
-        sfarr[pagenum].lva.updateItems(response);
+    public void update(int pagenum, Response<?> response, HorizontalViewAdapter horizontal_data){
+        sfarr[pagenum].lva.updateItems(response,horizontal_data);
     }
     @Override
     public Fragment getItem(int position) {

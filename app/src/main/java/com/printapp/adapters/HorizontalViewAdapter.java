@@ -8,21 +8,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.printapp.R;
+import com.printapp.models.Photo;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 
 public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAdapter.HorizontalViewHolder> {
 
-    ArrayList<String> strings = new ArrayList<>();
+    ArrayList<Photo> photos = new ArrayList<>();
 
-    public void add(){
-        strings.add("");
-        notifyItemInserted(strings.size());
+    public void add(Photo p){
+        photos.add(p);
+        notifyItemInserted(photos.size());
     }
     public void remove(int pos){
-        strings.remove(pos);
+        photos.remove(pos);
         notifyItemRemoved(pos);
+    }
+
+    public void setData(ArrayList<Photo> horizontal_data){
+        this.photos =horizontal_data;
+        notifyDataSetChanged();
+    }
+    public ArrayList<Photo> getData(){
+        return this.photos;
     }
 
     class HorizontalViewHolder extends RecyclerView.ViewHolder{
@@ -46,7 +56,7 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
     @Override
     public void onBindViewHolder(HorizontalViewAdapter.HorizontalViewHolder holder, int position) {
         final int pos = holder.getAdapterPosition();
-        holder.img.setImageResource(R.mipmap.ic_launcher);
+        Picasso.with(holder.img.getContext()).load(photos.get(position).photo_75).placeholder(R.drawable.image_placeholder).into(holder.img);
         holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,6 +68,7 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
 
     @Override
     public int getItemCount() {
-        return strings.size();
+        return photos.size();
     }
+
 }

@@ -10,16 +10,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.SearchView;
 
 import com.printapp.adapters.HorizontalViewAdapter;
-import com.printapp.adapters.ListViewAdapter;
 import com.printapp.adapters.SectionsPagerAdapter;
+import com.printapp.models.Photo;
 import com.printapp.models.SearchGroups;
 import com.printapp.models.SearchUsers;
 import com.printapp.models.ServiceGenerator;
 import com.printapp.models.VkApi;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,9 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private SearchView search;
     private RecyclerView recview;
-    private RecyclerView searchrecview;
     private HorizontalViewAdapter hva;
-    private ListViewAdapter lva;
     private VkApi vk;
     private Call call;
 
@@ -50,21 +49,13 @@ public class MainActivity extends AppCompatActivity {
         hva = new HorizontalViewAdapter();
         recview.setAdapter(hva);
 
-        Button btt = (Button) findViewById(R.id.btt);
-        btt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hva = new HorizontalViewAdapter();
-                recview.setAdapter(hva);
-            }
-        });
         search = (SearchView) findViewById(R.id.search);
         search.setIconified(false);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hva.add();
+                hva.add(new Photo());
                 search.setVisibility(View.VISIBLE);
             }
         });
@@ -92,11 +83,13 @@ public class MainActivity extends AppCompatActivity {
                 call.cancel();
                 switch (mViewPager.getCurrentItem()){
                     case 0: {
+
                         call = vk.searchUsers(newText,ServiceGenerator.API_VERSION,ServiceGenerator.ACCESS_TOKEN );
                         call.enqueue(new Callback<SearchUsers>() {
                             @Override
                             public void onResponse(Call<SearchUsers> call, Response<SearchUsers> response) {
-                                mSectionsPagerAdapter.update(mViewPager.getCurrentItem(), response);
+                                System.out.println("LIST LENGTH IN MAIN  "+hva.getData().size());
+                                mSectionsPagerAdapter.update(mViewPager.getCurrentItem(), response, hva);
                             }
 
                             @Override
@@ -112,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                         call.enqueue(new Callback<SearchGroups>() {
                             @Override
                             public void onResponse(Call<SearchGroups> call, Response<SearchGroups> response) {
-                                mSectionsPagerAdapter.update(mViewPager.getCurrentItem(), response);
+                                mSectionsPagerAdapter.update(mViewPager.getCurrentItem(), response,hva);
                             }
 
                             @Override
@@ -131,8 +124,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(data.hasExtra("1")){
-            Log.d("onActivityResult: ",data.getStringExtra("1"));
+        if(data.hasExtra("LIST")){
+            Log.d("onActivityResult: ", String.valueOf(((ArrayList<Photo>) data.getSerializableExtra("LIST")).size()));
+            hva.setData((ArrayList<Photo>) data.getSerializableExtra("LIST"));
+            Log.d("onActivityResult:", String.valueOf(hva.getData()));
         } else{
             Log.d("onActivityResult: ","Extra not found");
         }
