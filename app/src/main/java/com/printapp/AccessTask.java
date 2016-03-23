@@ -35,6 +35,6 @@ public class AccessTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        ServiceGenerator.ACCESS_TOKEN = s;
+        ServiceGenerator.ACCESS_TOKEN = "58501e0430315fc227b2baac1fd9379cf6513bc0e18b4c0413f4f8b94a75d7e2c3743c2714e01e6db446b";
     }
 }
