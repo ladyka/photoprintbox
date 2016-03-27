@@ -40,7 +40,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new AccessTask().execute();
+        //new AccessTask().execute();
+
+        ServiceGenerator.ACCESS_TOKEN = getIntent().getExtras().getString("TOKEN");
 
         recview = (RecyclerView) findViewById(R.id.recview);
         LinearLayoutManager llm = new LinearLayoutManager(this);
