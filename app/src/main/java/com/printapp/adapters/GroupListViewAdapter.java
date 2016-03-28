@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 
+import com.printapp.CircleTransform;
 import com.printapp.ItemActivity;
 import com.printapp.models.Group;
 import com.printapp.models.SearchGroups;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -43,6 +45,7 @@ public class GroupListViewAdapter extends ListViewAdapter {
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
         final Group currentGroup = items.get(position);
+        Picasso.with(holder.list_img.getContext()).load(currentGroup.photo_50).transform(new CircleTransform()).into(holder.list_img);
         holder.list_txt.setText(currentGroup.name);
         holder.wrapper.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 
+import com.printapp.CircleTransform;
 import com.printapp.ItemActivity;
 import com.printapp.models.SearchUsers;
 import com.printapp.models.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -43,6 +45,7 @@ public class UserListViewAdapter extends ListViewAdapter{
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
         final User currentUser = items.get(position);
+        Picasso.with(holder.list_img.getContext()).load(currentUser.photo_50).transform(new CircleTransform()).into(holder.list_img);
         holder.list_txt.setText(currentUser.first_name+" "+currentUser.last_name);
         holder.wrapper.setOnClickListener(new View.OnClickListener() {
             @Override

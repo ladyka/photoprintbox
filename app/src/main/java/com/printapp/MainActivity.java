@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
         vk = ServiceGenerator.createService(VkApi.class);
-        call = vk.searchUsers("",ServiceGenerator.API_VERSION,ServiceGenerator.ACCESS_TOKEN );
+        call = vk.searchUsers("",ServiceGenerator.API_VERSION,ServiceGenerator.ACCESS_TOKEN,ServiceGenerator.USER_FIELDS );
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (mViewPager.getCurrentItem()){
                     case 0: {
 
-                        call = vk.searchUsers(newText,ServiceGenerator.API_VERSION,ServiceGenerator.ACCESS_TOKEN );
+                        call = vk.searchUsers(newText,ServiceGenerator.API_VERSION,ServiceGenerator.ACCESS_TOKEN,ServiceGenerator.USER_FIELDS );
                         call.enqueue(new Callback<SearchUsers>() {
                             @Override
                             public void onResponse(Call<SearchUsers> call, Response<SearchUsers> response) {
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 call.cancel();
                 switch (position){
                     case 0: {
-                        call = vk.searchUsers(search.getQuery().toString(),ServiceGenerator.API_VERSION,ServiceGenerator.ACCESS_TOKEN );
+                        call = vk.searchUsers(search.getQuery().toString(),ServiceGenerator.API_VERSION,ServiceGenerator.ACCESS_TOKEN, ServiceGenerator.USER_FIELDS );
                         call.enqueue(new Callback<SearchUsers>() {
                             @Override
                             public void onResponse(Call<SearchUsers> call, Response<SearchUsers> response) {
