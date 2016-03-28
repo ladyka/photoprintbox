@@ -122,6 +122,58 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                call.cancel();
+                switch (position){
+                    case 0: {
+                        call = vk.searchUsers(search.getQuery().toString(),ServiceGenerator.API_VERSION,ServiceGenerator.ACCESS_TOKEN );
+                        call.enqueue(new Callback<SearchUsers>() {
+                            @Override
+                            public void onResponse(Call<SearchUsers> call, Response<SearchUsers> response) {
+                                System.out.println("LIST LENGTH IN MAIN  "+hva.getData().size());
+                                mSectionsPagerAdapter.update(mViewPager.getCurrentItem(), response, hva);
+                            }
+
+                            @Override
+                            public void onFailure(Call<SearchUsers> call, Throwable t) {
+                                System.out.println(call.request().url());
+                                t.printStackTrace();
+                            }
+                        });
+                        break;
+                    }
+                    case 1: {
+                        call = vk.searchGroups(search.getQuery().toString(),ServiceGenerator.API_VERSION,ServiceGenerator.ACCESS_TOKEN );
+                        call.enqueue(new Callback<SearchGroups>() {
+                            @Override
+                            public void onResponse(Call<SearchGroups> call, Response<SearchGroups> response) {
+                                mSectionsPagerAdapter.update(mViewPager.getCurrentItem(), response,hva);
+                            }
+
+                            @Override
+                            public void onFailure(Call<SearchGroups> call, Throwable t) {
+                                System.out.println(call.request().url());
+                                t.printStackTrace();
+                            }
+                        });
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
     }
 
     @Override
