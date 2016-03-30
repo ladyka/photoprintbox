@@ -22,9 +22,11 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
         photos.add(p);
         notifyItemInserted(photos.size());
     }
-    public void remove(int pos){
-        photos.remove(pos);
-        notifyItemRemoved(pos);
+    public void remove(Photo photo){
+        if(photos.contains(photo)){
+            photos.remove(photo);
+        }
+        notifyDataSetChanged();
     }
 
     public void setData(ArrayList<Photo> horizontal_data){
@@ -55,12 +57,12 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
 
     @Override
     public void onBindViewHolder(HorizontalViewAdapter.HorizontalViewHolder holder, int position) {
-        final int pos = holder.getAdapterPosition();
-        Picasso.with(holder.img.getContext()).load(photos.get(position).photo_75).placeholder(R.drawable.image_placeholder).into(holder.img);
+        final Photo photo = photos.get(holder.getAdapterPosition());
+        Picasso.with(holder.img.getContext()).load(photo.photo_75).placeholder(R.drawable.image_placeholder).into(holder.img);
         holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                remove(pos);
+                remove(photo);
             }
         });
     }
