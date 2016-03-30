@@ -11,6 +11,7 @@ public class Group {
     public double is_closed;
     public String type;
     public String photo;
+    public String photo_50;
     public String photo_medium;
     public String photo_big;
 }

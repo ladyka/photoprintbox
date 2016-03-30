@@ -9,7 +9,8 @@ public interface VkApi {
     Call<SearchUsers> searchUsers(
             @Query("q") String query,
             @Query("v") String version,
-            @Query("access_token") String token
+            @Query("access_token") String token,
+            @Query("fields") String fields
     );
     @GET("/method/groups.search")
     Call<SearchGroups> searchGroups(

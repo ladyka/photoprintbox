@@ -8,6 +8,7 @@ public class ServiceGenerator {
     public static final String API_URL = "https://api.vk.com/";
     public static String ACCESS_TOKEN = "";
     public static final String API_VERSION = "5.50";
+    public static final String USER_FIELDS= "photo_50";
 
     public static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
