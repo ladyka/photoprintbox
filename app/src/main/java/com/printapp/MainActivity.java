@@ -16,6 +16,7 @@ import com.printapp.adapters.HorizontalViewAdapter;
 import com.printapp.adapters.SectionsPagerAdapter;
 import com.printapp.models.Photo;
 import com.printapp.models.SearchGroups;
+import com.printapp.models.SearchPhotos;
 import com.printapp.models.SearchUsers;
 import com.printapp.models.ServiceGenerator;
 import com.printapp.models.VkApi;
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),this);
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -77,6 +78,22 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
+                call.cancel();
+                if(mViewPager.getCurrentItem()==2){
+                    call = vk.searchPhotos(query,ServiceGenerator.API_VERSION,ServiceGenerator.ACCESS_TOKEN);
+                    call.enqueue(new Callback<SearchPhotos>() {
+                        @Override
+                        public void onResponse(Call<SearchPhotos> call, Response<SearchPhotos> response) {
+                            Log.d("onResponse: ", String.valueOf(response.body().response.count));
+                            mSectionsPagerAdapter.update(mViewPager.getCurrentItem(),response,hva);
+                        }
+
+                        @Override
+                        public void onFailure(Call<SearchPhotos> call, Throwable t) {
+
+                        }
+                    });
+                }
                 return false;
             }
 

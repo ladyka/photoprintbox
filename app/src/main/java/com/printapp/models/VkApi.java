@@ -25,4 +25,10 @@ public interface VkApi {
             @Query("v") String version,
             @Query("access_token") String token
     );
+    @GET("/method/photos.search")
+    Call<SearchPhotos> searchPhotos(
+            @Query("q") String query,
+            @Query("v") String version,
+            @Query("access_token") String token
+    );
 }

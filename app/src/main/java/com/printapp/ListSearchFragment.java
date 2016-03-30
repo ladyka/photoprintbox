@@ -9,10 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.printapp.adapters.ListViewAdapter;
+import com.printapp.adapters.ListSearchAdapter;
 
-public class SearchFragment extends Fragment {
-    public SearchFragment() {}
+public class ListSearchFragment extends Fragment {
+    public ListSearchFragment() {}
 
     /**
      * The fragment argument representing the section number for this
@@ -21,14 +21,14 @@ public class SearchFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
 
 
-    public ListViewAdapter lva;
+    public ListSearchAdapter listSearchAdapter;
 
-    public static SearchFragment newInstance(int sectionNumber, ListViewAdapter listViewAdapter) {
-        SearchFragment fragment = new SearchFragment();
+    public static ListSearchFragment newInstance(int sectionNumber, ListSearchAdapter listSearchAdapter) {
+        ListSearchFragment fragment = new ListSearchFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
-        fragment.lva = listViewAdapter;
+        fragment.listSearchAdapter = listSearchAdapter;
         return fragment;
     }
 
@@ -41,7 +41,7 @@ public class SearchFragment extends Fragment {
         LinearLayoutManager sllm = new LinearLayoutManager(getContext());
         sllm.setOrientation(LinearLayoutManager.VERTICAL);
         rcv.setLayoutManager(sllm);
-        rcv.setAdapter(lva);
+        rcv.setAdapter(listSearchAdapter);
         return rootView;
     }
 }

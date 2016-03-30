@@ -12,7 +12,7 @@ import com.printapp.R;
 import retrofit2.Response;
 
 
-public abstract class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ListViewHolder>{
+public abstract class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.ListViewHolder>{
 
     public abstract void updateItems(Response<?> rawResponse, HorizontalViewAdapter horizontal_data);
 

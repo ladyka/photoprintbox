@@ -2,7 +2,6 @@ package com.printapp.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,19 +18,20 @@ import java.util.ArrayList;
 import retrofit2.Response;
 
 
-public class SimpleGridViewAdapter extends BaseAdapter {
+public class GridAdapter extends BaseAdapter {
 
     private Context mContext;
     private ArrayList<Photo> photos = new ArrayList<Photo>();
     private HorizontalViewAdapter data;
 
-    public SimpleGridViewAdapter(Context mContext,HorizontalViewAdapter horizontal_data) {
+    public GridAdapter(Context mContext) {
         this.photos = new ArrayList<>();
-        this.data = horizontal_data;
         this.mContext = mContext;
     }
 
-
+    public void setHorizontalViewAdapter(HorizontalViewAdapter horizontal_data){
+        this.data = horizontal_data;
+    }
 
     public void setGridData(Response<SearchPhotos> response) {
         this.photos = new ArrayList<Photo>();
@@ -67,18 +67,17 @@ public class SimpleGridViewAdapter extends BaseAdapter {
             row = inflater.inflate(R.layout.grid_item, parent, false);
             holder = new ViewHolder();
             holder.imageView = (ImageView) row.findViewById(R.id.grid_image);
-            holder.imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    data.add(item);
-                    notifyDataSetChanged();
-                }
-            });
             row.setTag(holder);
         } else {
             holder = (ViewHolder) row.getTag();
         }
-
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                data.add(item);
+                notifyDataSetChanged();
+            }
+        });
         Picasso.with(mContext).setIndicatorsEnabled(true);
 
         //Picasso.with(mContext).load(item.getImage()).into(holder.imageView);

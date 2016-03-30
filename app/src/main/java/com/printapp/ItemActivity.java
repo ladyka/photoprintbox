@@ -10,8 +10,8 @@ import android.util.Log;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.printapp.adapters.GridAdapter;
 import com.printapp.adapters.HorizontalViewAdapter;
-import com.printapp.adapters.SimpleGridViewAdapter;
 import com.printapp.models.Photo;
 import com.printapp.models.SearchPhotos;
 import com.printapp.models.ServiceGenerator;
@@ -28,8 +28,8 @@ public class ItemActivity extends AppCompatActivity {
     private VkApi vk;
     private Call<SearchPhotos> call;
     private RecyclerView horizontal_recview;
-    private GridView grid_view;
-    private SimpleGridViewAdapter sgva;
+    private GridView gridView;
+    private GridAdapter gridAdapter;
     private HorizontalViewAdapter hva;
 
     @Override
@@ -49,7 +49,7 @@ public class ItemActivity extends AppCompatActivity {
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
         horizontal_recview.setLayoutManager(llm);
         horizontal_recview.setAdapter(hva);
-        grid_view = (GridView) findViewById(R.id.grid_view);
+        gridView = (GridView) findViewById(R.id.grid_view);
 
 
         Toast.makeText(this, String.valueOf(this.getIntent().getExtras().getLong("ID")),Toast.LENGTH_SHORT).show();
@@ -62,9 +62,10 @@ public class ItemActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<SearchPhotos> call, Response<SearchPhotos> response) {
                 Log.d("onResponse: ", String.valueOf(response.body().response.count));
-                sgva = new SimpleGridViewAdapter(context,hva);
-                sgva.setGridData(response);
-                grid_view.setAdapter(sgva);
+                gridAdapter = new GridAdapter(context);
+                gridAdapter.setHorizontalViewAdapter(hva);
+                gridAdapter.setGridData(response);
+                gridView.setAdapter(gridAdapter);
             }
 
             @Override

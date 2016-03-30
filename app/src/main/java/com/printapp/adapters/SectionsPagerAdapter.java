@@ -1,30 +1,47 @@
 package com.printapp.adapters;
 
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.printapp.SearchFragment;
+import com.printapp.GridSearchFragment;
+import com.printapp.ListSearchFragment;
+import com.printapp.models.SearchPhotos;
 
 import retrofit2.Response;
 
 public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
-    public SearchFragment[] getSfarr() {
-        return this.sfarr;
+    Context context;
+    public ListSearchFragment[] getSfarr() {
+        return (ListSearchFragment[]) this.sfarr;
     }
 
-    public SearchFragment[] sfarr;
-    public SectionsPagerAdapter(FragmentManager fm) {
+    public Fragment[] sfarr;
+    public SectionsPagerAdapter(FragmentManager fm, Context context) {
         super(fm);
-        this.sfarr = new SearchFragment[2];
-        this.sfarr[0] = SearchFragment.newInstance(0, new UserListViewAdapter());
-        this.sfarr[1] = SearchFragment.newInstance(1, new GroupListViewAdapter());
+        this.context = context;
+        this.sfarr = new Fragment[3];
+        this.sfarr[0] = ListSearchFragment.newInstance(0, new UserListSearchAdapter());
+        this.sfarr[1] = ListSearchFragment.newInstance(1, new GroupListSearchAdapter());
+        this.sfarr[2] = GridSearchFragment.newInstance(new GridAdapter(context));
     }
 
     public void update(int pagenum, Response<?> response, HorizontalViewAdapter horizontal_data){
-        sfarr[pagenum].lva.updateItems(response,horizontal_data);
+        switch (pagenum){
+            case 0:
+            case 1: {
+                ((ListSearchFragment) sfarr[pagenum]).listSearchAdapter.updateItems(response, horizontal_data);
+                break;
+            }
+            case 2:{
+                //this.sfarr[2] = GridSearchFragment.newInstance(new GridAdapter(context));
+                ((GridSearchFragment) sfarr[pagenum]).gridAdapter.setHorizontalViewAdapter(horizontal_data);
+                ((GridSearchFragment) sfarr[pagenum]).gridAdapter.setGridData((Response<SearchPhotos>) response);
+            }
+        }
     }
     @Override
     public Fragment getItem(int position) {
@@ -43,6 +60,8 @@ public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
                 return "ПОЛЬЗОВАТЕЛИ";
             case 1:
                 return "ГРУППЫ";
+            case 2:
+                return "ФОТОГРАФИИ";
         }
         return null;
     }
