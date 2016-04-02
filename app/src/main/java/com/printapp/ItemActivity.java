@@ -23,7 +23,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ItemActivity extends AppCompatActivity {
+public class ItemActivity extends AppCompatActivity implements PhotoSelectDialogFragment.PhotoSelectListener{
     private Context context;
     private VkApi vk;
     private Call<SearchPhotos> call;
@@ -33,13 +33,19 @@ public class ItemActivity extends AppCompatActivity {
     private HorizontalViewAdapter hva;
 
     @Override
+    public void OnPhotoSelectListener(Photo photo) {
+        hva.remove(photo);
+        if(photo.count!=0){
+            hva.add(photo);
+        }    }
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.activity_item);
 
         horizontal_recview = (RecyclerView) findViewById(R.id.horizontal_recview);
-        hva = new HorizontalViewAdapter();
+        hva = new HorizontalViewAdapter(getSupportFragmentManager());
 
         hva.setData((ArrayList<Photo>) getIntent().getExtras().getSerializable("LIST"));
         System.out.println("LIST LENGTH IN ITEM  "+((ArrayList<Photo>) getIntent().getExtras().getSerializable("LIST")).size());
@@ -50,7 +56,6 @@ public class ItemActivity extends AppCompatActivity {
         horizontal_recview.setLayoutManager(llm);
         horizontal_recview.setAdapter(hva);
         gridView = (GridView) findViewById(R.id.grid_view);
-
 
         Toast.makeText(this, String.valueOf(this.getIntent().getExtras().getLong("ID")),Toast.LENGTH_SHORT).show();
 

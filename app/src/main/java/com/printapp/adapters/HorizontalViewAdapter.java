@@ -1,5 +1,6 @@
 package com.printapp.adapters;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.printapp.PhotoSelectDialogFragment;
 import com.printapp.R;
 import com.printapp.models.Photo;
 import com.squareup.picasso.Picasso;
@@ -17,10 +19,16 @@ import java.util.ArrayList;
 public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAdapter.HorizontalViewHolder> {
 
     ArrayList<Photo> photos = new ArrayList<>();
+    FragmentManager fragmentManager;
 
-    public void add(Photo p){
-        photos.add(p);
+    public HorizontalViewAdapter(FragmentManager fragmentManager) {
+        this.fragmentManager = fragmentManager;
+    }
+
+    public void add(Photo photo){
+        photos.add(photo);
         notifyItemInserted(photos.size());
+        notifyDataSetChanged();
     }
     public void remove(Photo photo){
         if(photos.contains(photo)){
@@ -43,7 +51,7 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
         public ImageView img;
         public HorizontalViewHolder(View itemView) {
             super(itemView);
-            txt = (TextView) itemView.findViewById(R.id.txt);
+            txt = (TextView) itemView.findViewById(R.id.count);
             img = (ImageView) itemView.findViewById(R.id.img);
         }
     }
@@ -58,11 +66,13 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
     @Override
     public void onBindViewHolder(HorizontalViewAdapter.HorizontalViewHolder holder, int position) {
         final Photo photo = photos.get(holder.getAdapterPosition());
+        holder.txt.setText(String.valueOf(photo.count));
         Picasso.with(holder.img.getContext()).load(photo.photo_75).placeholder(R.drawable.image_placeholder).into(holder.img);
         holder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                remove(photo);
+                PhotoSelectDialogFragment photoSelectDialogFragment = PhotoSelectDialogFragment.newInstance(photo,"UPDATE");
+                photoSelectDialogFragment.show(fragmentManager,"TAG");
             }
         });
     }

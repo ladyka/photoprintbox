@@ -2,12 +2,14 @@ package com.printapp.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.printapp.PhotoSelectDialogFragment;
 import com.printapp.R;
 import com.printapp.models.Photo;
 import com.printapp.models.SearchPhotos;
@@ -74,12 +76,12 @@ public class GridAdapter extends BaseAdapter {
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                data.add(item);
-                notifyDataSetChanged();
+                PhotoSelectDialogFragment photoSelectDialogFragment = PhotoSelectDialogFragment.newInstance(item,"ADD");
+                photoSelectDialogFragment.show(((AppCompatActivity)mContext).getSupportFragmentManager(),"TAG");
+
             }
         });
-        Picasso.with(mContext).setIndicatorsEnabled(true);
-
+        //Picasso.with(mContext).setIndicatorsEnabled(true);
         //Picasso.with(mContext).load(item.getImage()).into(holder.imageView);
         //Picasso.with(mContext).load(photos.get(position).photo_75).into(holder.imageView);
         Picasso.with(mContext)
@@ -93,4 +95,5 @@ public class GridAdapter extends BaseAdapter {
     class ViewHolder {
         ImageView imageView;
     }
+
 }

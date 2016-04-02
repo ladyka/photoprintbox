@@ -18,7 +18,6 @@ import com.printapp.models.Photo;
 import com.printapp.models.SearchGroups;
 import com.printapp.models.SearchPhotos;
 import com.printapp.models.SearchUsers;
-import com.printapp.models.ServiceGenerator;
 import com.printapp.models.VkApi;
 
 import java.util.ArrayList;
@@ -27,14 +26,27 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+import static com.printapp.models.ServiceGenerator.ACCESS_TOKEN;
+import static com.printapp.models.ServiceGenerator.API_VERSION;
+import static com.printapp.models.ServiceGenerator.USER_FIELDS;
+import static com.printapp.models.ServiceGenerator.createService;
+
+public class MainActivity extends AppCompatActivity implements PhotoSelectDialogFragment.PhotoSelectListener{
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private SearchView search;
     private RecyclerView recview;
-    private HorizontalViewAdapter hva;
+    private static HorizontalViewAdapter hva;
     private VkApi vk;
     private Call call;
+
+    @Override
+    public void OnPhotoSelectListener(Photo photo) {
+        hva.remove(photo);
+        if(photo.count!=0){
+            hva.add(photo);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +55,13 @@ public class MainActivity extends AppCompatActivity {
 
         //new AccessTask().execute();
 
-        ServiceGenerator.ACCESS_TOKEN = getIntent().getExtras().getString("TOKEN");
+        ACCESS_TOKEN = getIntent().getExtras().getString("TOKEN");
 
         recview = (RecyclerView) findViewById(R.id.recview);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
         recview.setLayoutManager(llm);
-        hva = new HorizontalViewAdapter();
+        hva = new HorizontalViewAdapter(getSupportFragmentManager());
         recview.setAdapter(hva);
 
         search = (SearchView) findViewById(R.id.search);
@@ -63,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),this);
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -72,15 +83,15 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        vk = ServiceGenerator.createService(VkApi.class);
-        call = vk.searchUsers("",ServiceGenerator.API_VERSION,ServiceGenerator.ACCESS_TOKEN,ServiceGenerator.USER_FIELDS );
+        vk = createService(VkApi.class);
+        call = vk.searchUsers("", API_VERSION, ACCESS_TOKEN, USER_FIELDS );
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
                 call.cancel();
                 if(mViewPager.getCurrentItem()==2){
-                    call = vk.searchPhotos(query,ServiceGenerator.API_VERSION,ServiceGenerator.ACCESS_TOKEN);
+                    call = vk.searchPhotos(query, API_VERSION, ACCESS_TOKEN);
                     call.enqueue(new Callback<SearchPhotos>() {
                         @Override
                         public void onResponse(Call<SearchPhotos> call, Response<SearchPhotos> response) {
@@ -103,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (mViewPager.getCurrentItem()){
                     case 0: {
 
-                        call = vk.searchUsers(newText,ServiceGenerator.API_VERSION,ServiceGenerator.ACCESS_TOKEN,ServiceGenerator.USER_FIELDS );
+                        call = vk.searchUsers(newText, API_VERSION, ACCESS_TOKEN, USER_FIELDS );
                         call.enqueue(new Callback<SearchUsers>() {
                             @Override
                             public void onResponse(Call<SearchUsers> call, Response<SearchUsers> response) {
@@ -120,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                     case 1: {
-                        call = vk.searchGroups(newText,ServiceGenerator.API_VERSION,ServiceGenerator.ACCESS_TOKEN );
+                        call = vk.searchGroups(newText, API_VERSION, ACCESS_TOKEN );
                         call.enqueue(new Callback<SearchGroups>() {
                             @Override
                             public void onResponse(Call<SearchGroups> call, Response<SearchGroups> response) {
@@ -150,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 call.cancel();
                 switch (position){
                     case 0: {
-                        call = vk.searchUsers(search.getQuery().toString(),ServiceGenerator.API_VERSION,ServiceGenerator.ACCESS_TOKEN, ServiceGenerator.USER_FIELDS );
+                        call = vk.searchUsers(search.getQuery().toString(), API_VERSION, ACCESS_TOKEN, USER_FIELDS );
                         call.enqueue(new Callback<SearchUsers>() {
                             @Override
                             public void onResponse(Call<SearchUsers> call, Response<SearchUsers> response) {
@@ -167,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     }
                     case 1: {
-                        call = vk.searchGroups(search.getQuery().toString(),ServiceGenerator.API_VERSION,ServiceGenerator.ACCESS_TOKEN );
+                        call = vk.searchGroups(search.getQuery().toString(), API_VERSION, ACCESS_TOKEN );
                         call.enqueue(new Callback<SearchGroups>() {
                             @Override
                             public void onResponse(Call<SearchGroups> call, Response<SearchGroups> response) {
