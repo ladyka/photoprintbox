@@ -14,7 +14,7 @@ import retrofit2.Response;
 
 public abstract class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.ListViewHolder>{
 
-    public abstract void updateItems(Response<?> rawResponse, HorizontalViewAdapter horizontal_data);
+    public abstract void updateItems(Response<?> rawResponse);
 
 
     public class ListViewHolder extends RecyclerView.ViewHolder{

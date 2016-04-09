@@ -20,8 +20,8 @@ public class UserListSearchAdapter extends ListSearchAdapter {
     HorizontalViewAdapter data;
 
     @Override
-    public void updateItems(Response<?> rawResponse,HorizontalViewAdapter horizontal_data) {
-        this.data = horizontal_data;
+    public void updateItems(Response<?> rawResponse) {
+        this.data = HorizontalViewAdapter.getHorizontalViewAdapter();
         try {
             Response<SearchUsers> response = (Response<SearchUsers>) rawResponse;
             items.clear();

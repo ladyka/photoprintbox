@@ -24,15 +24,10 @@ public class GridAdapter extends BaseAdapter {
 
     private Context mContext;
     private ArrayList<Photo> photos = new ArrayList<Photo>();
-    private HorizontalViewAdapter data;
 
     public GridAdapter(Context mContext) {
         this.photos = new ArrayList<>();
         this.mContext = mContext;
-    }
-
-    public void setHorizontalViewAdapter(HorizontalViewAdapter horizontal_data){
-        this.data = horizontal_data;
     }
 
     public void setGridData(Response<SearchPhotos> response) {
@@ -82,8 +77,6 @@ public class GridAdapter extends BaseAdapter {
             }
         });
         //Picasso.with(mContext).setIndicatorsEnabled(true);
-        //Picasso.with(mContext).load(item.getImage()).into(holder.imageView);
-        //Picasso.with(mContext).load(photos.get(position).photo_75).into(holder.imageView);
         Picasso.with(mContext)
                 .load(photos.get(position).photo_75)
                 .placeholder(R.drawable.image_placeholder)

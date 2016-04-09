@@ -20,8 +20,6 @@ import com.printapp.models.SearchPhotos;
 import com.printapp.models.SearchUsers;
 import com.printapp.models.VkApi;
 
-import java.util.ArrayList;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,13 +30,14 @@ import static com.printapp.models.ServiceGenerator.USER_FIELDS;
 import static com.printapp.models.ServiceGenerator.createService;
 
 public class MainActivity extends AppCompatActivity implements PhotoSelectDialogFragment.PhotoSelectListener{
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private SectionsPagerAdapter pagerAdapter;
     private ViewPager mViewPager;
     private SearchView search;
     private RecyclerView recview;
-    private static HorizontalViewAdapter hva;
+    private HorizontalViewAdapter hva;
     private VkApi vk;
     private Call call;
+    public static String TAG = "PRINT";
 
     @Override
     public void OnPhotoSelectListener(Photo photo) {
@@ -61,7 +60,8 @@ public class MainActivity extends AppCompatActivity implements PhotoSelectDialog
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.HORIZONTAL);
         recview.setLayoutManager(llm);
-        hva = new HorizontalViewAdapter(getSupportFragmentManager());
+        hva = HorizontalViewAdapter.getHorizontalViewAdapter();
+        hva.setFragmentManager(getSupportFragmentManager());
         recview.setAdapter(hva);
 
         search = (SearchView) findViewById(R.id.search);
@@ -75,16 +75,17 @@ public class MainActivity extends AppCompatActivity implements PhotoSelectDialog
             }
         });
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),this);
+        vk = createService(VkApi.class);
+        call = vk.searchUsers("", API_VERSION, ACCESS_TOKEN, USER_FIELDS );
+
+        pagerAdapter = new SectionsPagerAdapter(this);
         mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setAdapter(pagerAdapter);
 
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        vk = createService(VkApi.class);
-        call = vk.searchUsers("", API_VERSION, ACCESS_TOKEN, USER_FIELDS );
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements PhotoSelectDialog
                         @Override
                         public void onResponse(Call<SearchPhotos> call, Response<SearchPhotos> response) {
                             Log.d("onResponse: ", String.valueOf(response.body().response.count));
-                            mSectionsPagerAdapter.update(mViewPager.getCurrentItem(),response,hva);
+                            pagerAdapter.update(mViewPager.getCurrentItem(),response);
                         }
 
                         @Override
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements PhotoSelectDialog
                             @Override
                             public void onResponse(Call<SearchUsers> call, Response<SearchUsers> response) {
                                 System.out.println("LIST LENGTH IN MAIN  "+hva.getData().size());
-                                mSectionsPagerAdapter.update(mViewPager.getCurrentItem(), response, hva);
+                                pagerAdapter.update(mViewPager.getCurrentItem(), response);
                             }
 
                             @Override
@@ -135,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements PhotoSelectDialog
                         call.enqueue(new Callback<SearchGroups>() {
                             @Override
                             public void onResponse(Call<SearchGroups> call, Response<SearchGroups> response) {
-                                mSectionsPagerAdapter.update(mViewPager.getCurrentItem(), response,hva);
+                                pagerAdapter.update(mViewPager.getCurrentItem(), response);
                             }
 
                             @Override
@@ -158,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements PhotoSelectDialog
 
             @Override
             public void onPageSelected(int position) {
+                Log.d(TAG, "onPageSelected: "+position);
                 call.cancel();
                 switch (position){
                     case 0: {
@@ -166,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements PhotoSelectDialog
                             @Override
                             public void onResponse(Call<SearchUsers> call, Response<SearchUsers> response) {
                                 System.out.println("LIST LENGTH IN MAIN  "+hva.getData().size());
-                                mSectionsPagerAdapter.update(mViewPager.getCurrentItem(), response, hva);
+                                pagerAdapter.update(mViewPager.getCurrentItem(), response);
                             }
 
                             @Override
@@ -182,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements PhotoSelectDialog
                         call.enqueue(new Callback<SearchGroups>() {
                             @Override
                             public void onResponse(Call<SearchGroups> call, Response<SearchGroups> response) {
-                                mSectionsPagerAdapter.update(mViewPager.getCurrentItem(), response,hva);
+                                pagerAdapter.update(mViewPager.getCurrentItem(), response);
                             }
 
                             @Override
@@ -201,18 +203,11 @@ public class MainActivity extends AppCompatActivity implements PhotoSelectDialog
 
             }
         });
-
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(data.hasExtra("LIST")){
-            Log.d("onActivityResult: ", String.valueOf(((ArrayList<Photo>) data.getSerializableExtra("LIST")).size()));
-            hva.setData((ArrayList<Photo>) data.getSerializableExtra("LIST"));
-            Log.d("onActivityResult:", String.valueOf(hva.getData()));
-        } else{
-            Log.d("onActivityResult: ","Extra not found");
-        }
+        hva.setFragmentManager(getSupportFragmentManager());
         super.onActivityResult(requestCode, resultCode, data);
     }
 }

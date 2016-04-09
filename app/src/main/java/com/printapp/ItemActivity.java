@@ -17,8 +17,6 @@ import com.printapp.models.SearchPhotos;
 import com.printapp.models.ServiceGenerator;
 import com.printapp.models.VkApi;
 
-import java.util.ArrayList;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,10 +43,10 @@ public class ItemActivity extends AppCompatActivity implements PhotoSelectDialog
         setContentView(R.layout.activity_item);
 
         horizontal_recview = (RecyclerView) findViewById(R.id.horizontal_recview);
-        hva = new HorizontalViewAdapter(getSupportFragmentManager());
-
-        hva.setData((ArrayList<Photo>) getIntent().getExtras().getSerializable("LIST"));
-        System.out.println("LIST LENGTH IN ITEM  "+((ArrayList<Photo>) getIntent().getExtras().getSerializable("LIST")).size());
+        hva = HorizontalViewAdapter.getHorizontalViewAdapter();
+        hva.setFragmentManager(getSupportFragmentManager());
+        //hva.setData((ArrayList<Photo>) getIntent().getExtras().getSerializable("LIST"));
+        //System.out.println("LIST LENGTH IN ITEM  "+((ArrayList<Photo>) getIntent().getExtras().getSerializable("LIST")).size());
 
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -68,7 +66,6 @@ public class ItemActivity extends AppCompatActivity implements PhotoSelectDialog
             public void onResponse(Call<SearchPhotos> call, Response<SearchPhotos> response) {
                 Log.d("onResponse: ", String.valueOf(response.body().response.count));
                 gridAdapter = new GridAdapter(context);
-                gridAdapter.setHorizontalViewAdapter(hva);
                 gridAdapter.setGridData(response);
                 gridView.setAdapter(gridAdapter);
             }

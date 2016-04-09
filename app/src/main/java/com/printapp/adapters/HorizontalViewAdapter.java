@@ -20,8 +20,16 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
 
     ArrayList<Photo> photos = new ArrayList<>();
     FragmentManager fragmentManager;
+    static HorizontalViewAdapter instance;
 
-    public HorizontalViewAdapter(FragmentManager fragmentManager) {
+    public static HorizontalViewAdapter getHorizontalViewAdapter(){
+        if(instance == null){
+            instance = new HorizontalViewAdapter();
+        }
+        return instance;
+    }
+
+    public void setFragmentManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
 
@@ -30,6 +38,7 @@ public class HorizontalViewAdapter extends RecyclerView.Adapter<HorizontalViewAd
         notifyItemInserted(photos.size());
         notifyDataSetChanged();
     }
+
     public void remove(Photo photo){
         if(photos.contains(photo)){
             photos.remove(photo);
