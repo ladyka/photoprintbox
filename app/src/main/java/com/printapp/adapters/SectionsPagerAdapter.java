@@ -49,7 +49,7 @@ public class SectionsPagerAdapter extends PagerAdapter {
         switch (position){
             case 0:
             case 1:{
-                v = View.inflate(context, R.layout.fragment_main,null);
+                v = View.inflate(context, R.layout.main_search_list,null);
                 RecyclerView searchRecView = (RecyclerView) v.findViewById(R.id.searchRecView);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
                 linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -58,7 +58,7 @@ public class SectionsPagerAdapter extends PagerAdapter {
                 break;
             }
             case 2:{
-                v = View.inflate(context, R.layout.fragment_main_grid,null);
+                v = View.inflate(context, R.layout.main_search_grid,null);
                 GridView gridView = (GridView) v.findViewById(R.id.grid_view);
                 gridView.setAdapter((GridAdapter) searches.get(position));
                 break;
