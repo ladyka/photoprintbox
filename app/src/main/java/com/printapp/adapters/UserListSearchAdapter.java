@@ -1,13 +1,12 @@
 package com.printapp.adapters;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 
-import com.printapp.utils.CircleTransform;
 import com.printapp.activities.ItemActivity;
 import com.printapp.models.SearchUsers;
 import com.printapp.models.User;
+import com.printapp.utils.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -52,9 +51,8 @@ public class UserListSearchAdapter extends ListSearchAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(),ItemActivity.class);
                 intent.putExtra("ID",(long)currentUser.id);
-                System.out.println("LIST LENGTH IN ADAPTER  "+data.photos.size());
-                intent.putExtra("LIST", data.photos);
-                ((Activity) v.getContext()).startActivityForResult(intent, 1);
+                intent.putExtra("TITLE", currentUser.first_name+" "+currentUser.last_name);
+                v.getContext().startActivity(intent);
                 //Toast.makeText(v.getContext(),String.valueOf(currentUser.id),Toast.LENGTH_SHORT).show();
             }
         });

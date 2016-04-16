@@ -10,20 +10,30 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:paddingTop="@dimen/appbar_padding_top"
         >
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/horizontal_recview"
             android:layout_width="match_parent"
             android:layout_height="100dp">
         </android.support.v7.widget.RecyclerView>
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+        </android.support.v7.widget.Toolbar>
+
+
     </android.support.design.widget.AppBarLayout>
 
     <GridView
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="168dp"
         android:id="@+id/grid_view"
         android:numColumns="3"
         android:layout_width="match_parent"
