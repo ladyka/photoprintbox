@@ -1,5 +1,6 @@
 package com.printapp.adapters;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 
@@ -52,8 +53,7 @@ public class UserListSearchAdapter extends ListSearchAdapter {
                 Intent intent = new Intent(v.getContext(),ItemActivity.class);
                 intent.putExtra("ID",(long)currentUser.id);
                 intent.putExtra("TITLE", currentUser.first_name+" "+currentUser.last_name);
-                v.getContext().startActivity(intent);
-                //Toast.makeText(v.getContext(),String.valueOf(currentUser.id),Toast.LENGTH_SHORT).show();
+                ((Activity) v.getContext()).startActivityForResult(intent,1);
             }
         });
     }
