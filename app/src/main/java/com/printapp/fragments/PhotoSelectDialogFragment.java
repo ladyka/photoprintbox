@@ -14,9 +14,9 @@ import com.printapp.R;
 import com.printapp.models.Photo;
 import com.squareup.picasso.Picasso;
 
-public class PhotoSelectDialogFragment extends DialogFragment{
+public class  PhotoSelectDialogFragment extends DialogFragment{
 
-    Button photoAddButton;
+    Button photoAddButton, photoDeleteButton;
     ImageView selectedPhoto;
     NumberPicker numberPicker;
     Photo photo;
@@ -53,16 +53,35 @@ public class PhotoSelectDialogFragment extends DialogFragment{
 
         numberPicker = (NumberPicker) view.findViewById(R.id.numberPicker);
         numberPicker.setMaxValue(5);
-        numberPicker.setMinValue(0);
+        numberPicker.setMinValue(1);
+//        numberPicker.setValue(1);
 
         photoAddButton = (Button) view.findViewById(R.id.button);
+        photoDeleteButton = (Button) view.findViewById(R.id.button2);
         switch (getArguments().getString("ACTION")){
             case "ADD":{
                 photoAddButton.setText("ДОБАВИТЬ");
+                photoDeleteButton.setText("ОТМЕНИТЬ");
+                photoDeleteButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss();
+                    }
+                });
                 break;
             }
             case "UPDATE":{
                 photoAddButton.setText("СОХРАНИТЬ");
+                photoDeleteButton.setText("УДАЛИТЬ");
+                photoDeleteButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        photo.count = 0;
+                        PhotoSelectListener photoSelectListener = (PhotoSelectListener) getActivity();
+                        photoSelectListener.OnPhotoSelectListener(photo);
+                        dismiss();
+                    }
+                });
                 break;
             }
 

@@ -72,8 +72,6 @@ public class MainActivity extends AppCompatActivity implements PhotoSelectDialog
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hva.add(new Photo());
-                search.setVisibility(View.VISIBLE);
             }
         });
 
