@@ -1,4 +1,4 @@
-package com.printapp;
+package com.printapp.fragments;
 
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 
+import com.printapp.R;
 import com.printapp.models.Photo;
 import com.squareup.picasso.Picasso;
 

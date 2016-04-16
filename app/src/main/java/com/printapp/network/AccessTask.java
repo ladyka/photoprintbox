@@ -1,9 +1,7 @@
-package com.printapp;
+package com.printapp.network;
 
 import android.os.AsyncTask;
 import android.util.Log;
-
-import com.printapp.models.ServiceGenerator;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

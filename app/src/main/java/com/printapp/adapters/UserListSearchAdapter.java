@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 
-import com.printapp.CircleTransform;
-import com.printapp.ItemActivity;
+import com.printapp.utils.CircleTransform;
+import com.printapp.activities.ItemActivity;
 import com.printapp.models.SearchUsers;
 import com.printapp.models.User;
 import com.squareup.picasso.Picasso;

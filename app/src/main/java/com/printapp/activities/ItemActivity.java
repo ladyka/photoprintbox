@@ -1,4 +1,4 @@
-package com.printapp;
+package com.printapp.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,18 +10,20 @@ import android.util.Log;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.printapp.fragments.PhotoSelectDialogFragment;
+import com.printapp.R;
 import com.printapp.adapters.GridAdapter;
 import com.printapp.adapters.HorizontalViewAdapter;
 import com.printapp.models.Photo;
 import com.printapp.models.SearchPhotos;
-import com.printapp.models.ServiceGenerator;
-import com.printapp.models.VkApi;
+import com.printapp.network.ServiceGenerator;
+import com.printapp.network.VkApi;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ItemActivity extends AppCompatActivity implements PhotoSelectDialogFragment.PhotoSelectListener{
+public class ItemActivity extends AppCompatActivity implements PhotoSelectDialogFragment.PhotoSelectListener {
     private Context context;
     private VkApi vk;
     private Call<SearchPhotos> call;

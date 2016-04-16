@@ -1,4 +1,8 @@
-package com.printapp.models;
+package com.printapp.network;
+
+import com.printapp.models.SearchGroups;
+import com.printapp.models.SearchPhotos;
+import com.printapp.models.SearchUsers;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

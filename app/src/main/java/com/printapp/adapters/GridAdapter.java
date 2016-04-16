@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import com.printapp.PhotoSelectDialogFragment;
+import com.printapp.fragments.PhotoSelectDialogFragment;
 import com.printapp.R;
 import com.printapp.models.Photo;
 import com.printapp.models.SearchPhotos;

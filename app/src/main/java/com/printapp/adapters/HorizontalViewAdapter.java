@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.printapp.PhotoSelectDialogFragment;
+import com.printapp.fragments.PhotoSelectDialogFragment;
 import com.printapp.R;
 import com.printapp.models.Photo;
 import com.squareup.picasso.Picasso;

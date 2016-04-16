@@ -1,4 +1,4 @@
-package com.printapp;
+package com.printapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,24 +12,26 @@ import android.util.Log;
 import android.view.View;
 import android.widget.SearchView;
 
+import com.printapp.fragments.PhotoSelectDialogFragment;
+import com.printapp.R;
 import com.printapp.adapters.HorizontalViewAdapter;
 import com.printapp.adapters.SectionsPagerAdapter;
 import com.printapp.models.Photo;
 import com.printapp.models.SearchGroups;
 import com.printapp.models.SearchPhotos;
 import com.printapp.models.SearchUsers;
-import com.printapp.models.VkApi;
+import com.printapp.network.VkApi;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.printapp.models.ServiceGenerator.ACCESS_TOKEN;
-import static com.printapp.models.ServiceGenerator.API_VERSION;
-import static com.printapp.models.ServiceGenerator.USER_FIELDS;
-import static com.printapp.models.ServiceGenerator.createService;
+import static com.printapp.network.ServiceGenerator.ACCESS_TOKEN;
+import static com.printapp.network.ServiceGenerator.API_VERSION;
+import static com.printapp.network.ServiceGenerator.USER_FIELDS;
+import static com.printapp.network.ServiceGenerator.createService;
 
-public class MainActivity extends AppCompatActivity implements PhotoSelectDialogFragment.PhotoSelectListener{
+public class MainActivity extends AppCompatActivity implements PhotoSelectDialogFragment.PhotoSelectListener {
     private SectionsPagerAdapter pagerAdapter;
     private ViewPager mViewPager;
     private SearchView search;

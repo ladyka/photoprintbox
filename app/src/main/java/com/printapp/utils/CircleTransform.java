@@ -1,4 +1,4 @@
-package com.printapp;
+package com.printapp.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
